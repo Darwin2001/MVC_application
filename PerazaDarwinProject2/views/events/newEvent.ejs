@@ -1,0 +1,42 @@
+<%- include('../partials/header.ejs')%>
+    <main>
+        <div class="main-body">
+            <h4>Create a new event!</h4>
+            <form action="/events" method="POST">
+                <label for="category" class="labels">Category:</label>
+                <select name="category" id="category" required class="inputs">
+                    <option value="">--Select a Category--</option>
+                    <option value="Pokemon-Go">Pokemon GO</option>
+                    <option value="SSBU">Smash Bros</option>
+                    <option value="CD">Call of Duty</option>
+                    <option value="PkmnVGC">Pokemon VGC</option>
+                    <option value="Minecraft">Minecraft</option>
+                    <option value="Other">Other</option>
+                </select>
+                <br>
+                <label for="title" class="labels">Title:</label>
+                <input type="text" name="title" id="title" required class="inputs">
+                <br>
+                <label for='host_name' class='labels'>Author:</label>
+                <input type='text' name='host_name' id=" host_name" required class='inputs'>
+                <br>
+                <label for="details" class="labels">Description:</label>
+                <textarea id="details" name="details" required placeholder="Description" class="inputs"></textarea>
+                <br>
+                <label for="location" class="labels">Location:</label>
+                <input type="text" name="location" id="location" required class="inputs">
+                <br>
+                <label for="start_date" class="labels">Start Date:</label>
+                <input type="datetime-local" id="start_date" name="start_date" required class="inputs"><br>
+                <label for="end_date" class="labels">End Date:</label>
+                <input type="datetime-local" id="end_date" name="end_date" required class="inputs">
+                <br>
+                <label for="image" class="labels">Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" class="inputs">
+                <br>
+                <input type="submit" value="Submit" class="sub-button">
+
+            </form>
+        </div>
+    </main>
+    <%- include('../partials/footer.ejs')%>

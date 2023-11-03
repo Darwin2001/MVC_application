@@ -1,0 +1,30 @@
+<%- include('../partials/header.ejs')%>
+    <main>
+        <div class="main-body">
+            <h4>Pokemon Go Raids</h4>
+            <ul>
+            <%if(events.length) {%>
+                <%events.forEach(event=>{%>
+                    <%if(event.category == 'Pokemon-Go'){%>
+                    <li><a href="/events/<%=event.id%>"><p><%=event.title%></p></a></li>
+                    <%} else { %>
+                        <% } %>
+                    <% }); } else{%>
+                        <p>There are no stories to display</p>
+                        <%}%>
+                    </ul>
+            <h4>Super Smash Brothers Ulltimate</h4>
+            <ul>
+                <%if(events.length) {%>
+                    <%events.forEach(event=>{%>
+                        <%if(event.category == 'SSBU'){%>
+                        <li><a href="/events/<%=event.id%>"><p><%=event.title%></p></a></li>
+                        <%} else { %>
+                            <% } %>
+                        <% }); } else{%>
+                            <p>There are no stories to display</p>
+                            <%}%>
+                        </ul>
+        </div>
+    </main>
+    <%- include('../partials/footer.ejs')%>

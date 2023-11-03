@@ -1,0 +1,180 @@
+.banner {
+    background-color: limegreen;
+    height: 25vh;
+    width: 100%;
+    transform: translateY(-10%);
+}
+
+body {
+    margin: 0;
+}
+
+.favicon {
+    height: 150px;
+    width: 150px;
+    transform: translateY(0%);
+}
+
+.rule {
+    border: solid white 2px;
+    transform: translateY(-1100%);
+}
+
+.right-side {
+    float: right;
+    transform: translateY(400%);
+}
+
+.bottom-tab {
+    float: left;
+    transform: translateY(-162%);
+}
+
+.bottom-banner {
+    height: 7vh;
+    width: 100%;
+    background-color: limegreen;
+    position: fixed;
+    bottom: 0;
+    color: white;
+    font-size: 15px;
+}
+
+.bottom-text {
+    transform: translateX(10%);
+    float: left;
+}
+
+.bottom-button {
+    border: solid black 2px;
+}
+
+.main-body {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 8%;
+    height: 40vh;
+
+}
+
+.button-holder {
+    transform: translateY(65%);
+    margin-left: 2%;
+    float: left;
+}
+
+.socials {
+    height: 20px;
+    width: 20px;
+    border: solid black 2px;
+}
+
+.logo-banner {
+    float: right;
+    color: white;
+    transform: translateY(40%);
+    width: 100px;
+}
+
+.social-img {
+    padding-left: 20px;
+}
+
+.link-button {
+    color: white;
+    text-decoration: none;
+    font-size: large;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.link-button:hover {
+    background-color: #AEF359;
+}
+
+.post-board li {
+    list-style: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.post-board a {
+    text-decoration: none;
+    color: black;
+}
+
+.post-board a:visited {
+    color: black;
+}
+
+.post-img {
+    height: 200px;
+    width: 300px;
+    float: left;
+}
+
+.post-details {
+    transform: translateX(5%);
+    margin-top: 30px;
+}
+
+.post-details li {
+    list-style: none;
+}
+
+.edit-buttons {
+    overflow: auto;
+}
+
+.post-heading {
+    float: left;
+    margin-right: 10px;
+}
+
+.post-buttons {
+    float: left;
+    height: 20px;
+    width: 20px;
+    margin-left: 2px;
+    transform: translateY(90%);
+}
+
+.form-labels {
+    float: left;
+    border: solid black 2px;
+    height: 30vh;
+}
+
+form label {
+    text-align: center;
+    display: inline-block;
+    margin-bottom: 1px;
+    height: 30px;
+    text-align: center;
+    margin-right: 50px;
+    width: 80px;
+
+}
+
+.sub-button {
+    width: 60%;
+    margin-left: 133px;
+    box-sizing: border-box;
+    border: solid black 2px;
+    height: 28px;
+    background-color: limegreen;
+    color: white;
+}
+
+.inputs {
+    border: solid black 2px;
+    display: inline;
+    width: 60%;
+    margin-top: -3px;
+    margin-bottom: -8px;
+    height: 28px;
+    box-sizing: border-box;
+
+}
