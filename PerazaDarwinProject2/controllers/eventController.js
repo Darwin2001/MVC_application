@@ -115,6 +115,12 @@ exports.delete = (req, res, next) => {
     model.findByIdAndDelete(id, { useFindandModify: false })
         .then(event => {
             if (event) {
+                RSVP.deleteMany({event_id: id})
+                .then(  function(){
+                    console.log("Data deleted");
+                }).catch(function(error){
+                 console.log('error'); 
+                });
                 req.flash('success', 'Successfully deleted an event');
                 res.redirect('/events');
             }
@@ -161,8 +167,6 @@ exports.updateRsvp = (req, res, next) => {
         status= 'yes';
         model.findById(event_id)
             .then(event => {
-                event.rsvps = event.rsvps + 1;
-                event.save();
                 req.flash('success', "Succesfully RSVPed!");
                 res.redirect('/events/' + event_id);
             })
@@ -170,25 +174,48 @@ exports.updateRsvp = (req, res, next) => {
     }
     else if (response == "maybe") {
         status = 'maybe';
-        req.flash('success', "Succesfully Maybe'd!");
-        res.redirect('/events/' + event_id);
+        model.findById(event_id)
+            .then(event => {
+                req.flash('success', "Succesfully Maybe'd!");
+                res.redirect('/events/' + event_id);
+            })
     }
 
     else {
         status = 'no';
-        req.flash('success', "Succesfully said No!");
-        res.redirect('/events/' + event_id);
+        model.findById(event_id)
+        .then(event => {
+            req.flash('success', "Succesfully No'd!");
+            res.redirect('/events/' + event_id);
+        })
     }
-
-    //Makes the RSVP
-     RSVP.create({user_id: user_id, event_id: event_id, status: status});
 
     const filter = {user_id : user_id, event_id: event_id};
     const update = {status: status};
 
-    let doc =  RSVP.findOneAndUpdate(filter, update, {upsert:true});
 
-    console.log(doc.user_id);
+    RSVP.findOneAndUpdate(filter, update, {upsert: true})
+    .then(result =>{
+        if(( result == null ||result.status == 'no' || result.status == 'maybe') && status == "yes"){
+            model.findById(event_id)
+            .then(event => {
+                event.rsvps +=1;
+                event.save();
+            });
+        }
+        else if(result == null && (status == 'maybe' || status == 'no')){
+            //Do nothing to RSVP count
+        }
+        else if( result.status == 'yes' && (status == 'maybe' || status == 'no') ){ 
+            model.findById(event_id)
+            .then(event => {
+                event.rsvps = event.rsvps -= 1;
+                event.save();
+            });
+        }
+    });
+
+    
 
 }
 
