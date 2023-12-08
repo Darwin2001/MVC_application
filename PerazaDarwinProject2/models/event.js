@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+    const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
-    author:{type:String, required:[true, 'Author must be assigned']},
+    author: {type: Schema.Types.ObjectId, ref: 'User'},
     title: {type: String, required: [true, "title is required"]},
     category: {type:String, required:[true, "Category is required"]},
     host_name: {type: String, required:[true, 'name is required']},
@@ -10,7 +10,8 @@ const eventSchema = new Schema({
     end_date: {type:String, required:[true, 'end date is required']},
     location: {type: String, required:[true, 'location is required']},
     details: {type: String, required:[true, 'details are required'], minLength:[12, 'The content should have at least 12 characters']},
-    image: {type:String}
+    image: {type:String},
+    rsvps: {type:Number}
 
 });
 

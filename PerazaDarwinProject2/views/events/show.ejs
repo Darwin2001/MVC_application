@@ -6,12 +6,26 @@
                     <%=event.title%>
                 </h4>
                 <div class="spec-button">
+                    <%if(user != null && user._id.toString() == event.author.toString()) {%>
                     <form>
-                    <button type="submit" formmethod="GET" formaction="/events/<%=event.id%>/edit">Edit</button>
-                    <button type="submit" formmethod="POST"
-                        formaction="/events/<%= event.id%>?_method=DELETE">Delete</button>
+                    <button class='button-edit-yes' type="submit" formmethod="GET" formaction="/events/<%=event.id%>/edit">Edit</button>
+                    <button class='button-edit-no' type="submit" formmethod="POST" formaction="/events/<%= event.id%>?_method=DELETE">Delete</button>
                         </form>
-                </div>
+                    </div>
+                        <%}else if(user != null){%>
+                            <div class="test">
+                            <h4 class>Going?</h4>
+                            <form action="/events/<%=event.id%>/rsvp?_method=POST">
+                            <button class="button-edit-yes" type='submit' name="rsvp_answer" value="yes" formmethod="post">Yes</button>
+                            <button class="button-edit-no" type='submit' name="rsvp_answer" value="no" formmethod="post">No</button>
+                            <button class="button-edit-maybe" type='submit' name="rsvp_answer" value="maybe" formmethod="post">Maybe</button>
+                            </form>
+                        </div>
+                            </div>
+                            <%}else{%>
+                            </div>
+                            <%}%>
+                
             </div>
             <hr>
             <img src="/../<%=event.image %>" class="post-img" alt="Image uploaded with post">
@@ -40,6 +54,9 @@
                     <p><strong>Details:</strong>
                         <%=event.details%>
                     </p>
+                </li>
+                <li>
+                    <p><strong>Number of RSVPs: <%=event.rsvps%></strong></p>
                 </li>
             </ul>
         </div>

@@ -7,7 +7,6 @@ exports.isGuest = (req, res, next) => {
     }
     else {
         req.flash("error", "you are logged in already");
-
         //redirect home
         return res.redirect("/");
     }
@@ -36,7 +35,7 @@ exports.isAuthor = (req, res, next)=>{
             }
             else{
                 let err = new Error("Unathorized access to the resource");
-                err.status=404;
+                err.status=401;
                 return next(err);
             }
         }

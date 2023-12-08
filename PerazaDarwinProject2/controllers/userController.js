@@ -1,5 +1,6 @@
 const model = require('../models/user');
 const Event = require('../models/event');
+const RSVP = require('../models/rsvp');
 
 exports.new = (req, res)=>{
     res.render('./user/new');
@@ -8,7 +9,10 @@ exports.new = (req, res)=>{
 exports.create = (req, res, next)=>{
         let user = new model(req.body);
     user.save()
-    .then(user=> res.redirect('/user/login'))
+    .then(user=> {
+        req.flash('success','Successfully created an Account!');
+        res.redirect('/user/login');
+    })
     .catch(err=>{
         if(err.name === 'ValidationError' ) {
             req.flash('error', err.message);  
@@ -57,10 +61,10 @@ exports.login = (req, res, next)=>{
 
 exports.profile = (req, res, next)=>{
     let id = req.session.user;
-    Promise.all([model.findById(id), Event.find({author:id})])
+    Promise.all([model.findById(id), Event.find({author:id}), RSVP.find({user_id:id}), Event.find()])
     .then(results=>{
-        const[user, events] = results;
-        res.render('./user/profile', {user, events})
+        const[user, events, rsvps, eventList] = results;
+        res.render('./user/profile', {user, events, rsvps,eventList});
     })
     .catch(err=>next(err));
 };

@@ -13,12 +13,12 @@
         <div class="banner">
             <a href="/"><img src="/images/GH-logo/ghTransparent.png" class="favicon" alt="gamershublogo"></a>
             <div class="right-side">
-                <a href="/events/newEvent" class="link-button">New Event</a>
                 <%if(!user){%>
                 <a href="/user/new" class="link-button">Sign Up</a>
                 <a href="/user/login" class="link-button">Log In</a>
                 <%}else{%>
-                    <a href="/user/profile" class="link-button">Profile</a>
+                    <a href="/events/newEvent" class="link-button">New Event</a>
+                    <a href="/user/profile" class="link-button"><%=user.firstName%>'s Profile</a>
                     <a href="/user/logout" class="link-button">Logoout</a>
                 <%}%>
             </div>
@@ -27,4 +27,14 @@
                 <a href="/events" class="link-button">Events</a>
             </div>
         </div>
+        <%if(errorMessages.length > 0) {
+            errorMessages.forEach(message=>{%>
+                <div class="error"><%=message%></div>
+                <% });
+        }%>
+        <%if(successMessages.length > 0) {
+            successMessages.forEach(message=>{%>
+                <div class="success"><%=message%></div>
+                <% });
+        }%>
     </header>

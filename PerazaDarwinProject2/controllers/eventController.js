@@ -1,101 +1,195 @@
 const model = require('../models/event');
+const User = require('../models/user');
+const RSVP = require('../models/rsvp');
 
 //Send all user stories to the page
 exports.index = (req, res) => {
-    model.find()
-    .then(events=>res.render('./events/index', {events}))
-    .catch(err=>next(err));
+    let id = req.session.user;
+    User.findById(id)
+        .then(user => {
+            model.find()
+                .then(events => res.render('./events/index', { events, user }))
+                .catch(err => next(err));
+        })
+        .catch(err => next(err));
 };
 
 //Send the details of an identified event
 exports.show = (req, res, next) => {
     let id = req.params.id;
-
-    model.findById(id)
-    .then(event=>{
-        if(event){
-            return res.render('./events/show', {event});
-        }
-        else{
-            let err = new Error('Cannot find a story with id  ' + id);
-            err.status = 404;
-            next(err);
-        }
-    })
+    let userId = req.session.user;
+    User.findById(userId)
+        .then(user => {
+            if (user) {
+                model.findById(id)
+                    .then(event => {
+                        if (event) {
+                            return res.render('./events/show', { event, user });
+                        }
+                        else {
+                            let err = new Error('Cannot find a story with id  ' + id);
+                            err.status = 404;
+                            next(err);
+                        }
+                    })
+            }
+            else {
+                model.findById(id)
+                    .then(event => {
+                        if (event) {
+                            return res.render('./events/show', { event });
+                        }
+                        else {
+                            let err = new Error('Cannot find a story with id  ' + id);
+                            err.status = 404;
+                            next(err);
+                        }
+                    })
+            }
+        })
+        .catch(err => next(err));
 };
 
 exports.newEvent = (req, res) => {
-    res.render('events/newEvent');
+    let id = req.session.user;
+    User.findById(id)
+        .then(user => {
+            res.render('events/newEvent', { user });
+        })
+        .catch(err => next(err));
 };
 
 //This one creates a new story from inputted fields
 exports.create = (req, res, next) => {
     //res.send("created a new story.");
-
+    let id = req.session.user;
     let event = new model(req.body);
-    event.author = req.session.user;
-    event.save()
-    .then(event=>res.redirect('/events'))
-    .catch(err=>{
-        if(err.name === 'ValidationError'){
-            err.status = 400;
-        }
-        next(err);
-    });
+    event.author = id;
+    User.findById(id)
+        .then(user => {
+            if (user) {
+                event.host_name = user.firstName + " " + user.lastName;
+                event.rsvps = 0;
+                event.save()
+                    .then(event => {
+                        req.flash('success', 'Successfully created a new Event!');
+                        res.redirect('/events')
+                    })
+                    .catch(err => {
+                        if (err.name === 'ValidationError') {
+                            err.status = 400;
+                        }
+                        next(err);
+                    });
+            }
+            else {
+                let err = new Error('Cannot find user with id  ' + id);
+                err.status = 404;
+                next(err);
+            }
+        })
+        .catch(err => next(err));
 };
 
 //edit page
 exports.edit = (req, res) => {
     let id = req.params.id;
+
     model.findById(id)
-    .then(event=>{
-        if(event){
-            return res.render('./events/edit', {event});
-        }
-        else{
-            let err = new Error("Cannont find a story with id ' " + id);
-            err.status = 404;
-            next(err);
-        }
-    })
-    .catch(err=>next(err));
+        .then(event => {
+            if (event) {
+                return res.render('./events/edit', { event });
+            }
+            else {
+                let err = new Error("Cannont find a story with id ' " + id);
+                err.status = 404;
+                next(err);
+            }
+        })
+        .catch(err => next(err));
 };
 
 exports.delete = (req, res, next) => {
     let id = req.params.id;
-    
-    model.findByIdAndDelete(id, {useFindandModify: false})
-    .then(event=>{
-        if(event){
-            res.redirect('/events');
-        }
-        else{
-            let err= new Error('Cannot find a story with id ' + id);
-            err.status = 404;
-            return next(err);
-        }
-    })
-    .catch(err=>next(err));
+
+    model.findByIdAndDelete(id, { useFindandModify: false })
+        .then(event => {
+            if (event) {
+                req.flash('success', 'Successfully deleted an event');
+                res.redirect('/events');
+            }
+            else {
+                let err = new Error('Cannot find a story with id ' + id);
+                err.status = 404;
+                return next(err);
+            }
+        })
+        .catch(err => next(err));
 };
 
-exports.update = (req, res) => {
-   let event = req.body;
-   let id = req.params.id;
+exports.update = (req, res, next) => {
+    let event = req.body;
+    let id = req.params.id;
 
-   model.findByIdAndUpdate(id, event, {useFindandModify: false, runValidators: true})
-   .then(event=>{
-    if(event){
-        res.redirect('/events/'+id);
-    }
-    else{
-        let err =  new Error("Cannot find a story with id " + id);
-        err.status = 404;
-        next(err);
-    }
-   })
-   .catch(err=>{
-    if(err.name === "ValidationError")
-    err.status = 400;
-    next(err);
-   });
+    model.findByIdAndUpdate(id, event, { useFindandModify: false, runValidators: true })
+        .then(event => {
+            if (event) {
+                req.flash('success', 'Successfully edited an Event!');
+                res.redirect('/events/' + id);
+            }
+            else {
+                let err = new Error("Cannot find a story with id " + id);
+                err.status = 404;
+                next(err);
+            }
+        })
+        .catch(err => {
+            if (err.name === "ValidationError")
+                err.status = 400;
+            next(err);
+        });
 };
+
+exports.updateRsvp = (req, res, next) => {
+    let user_id = req.session.user;
+    let event_id = req.params.id;
+    let response = req.body['rsvp_answer'];
+    let status = null;
+
+
+    if (response == "yes") {
+        status= 'yes';
+        model.findById(event_id)
+            .then(event => {
+                event.rsvps = event.rsvps + 1;
+                event.save();
+                req.flash('success', "Succesfully RSVPed!");
+                res.redirect('/events/' + event_id);
+            })
+
+    }
+    else if (response == "maybe") {
+        status = 'maybe';
+        req.flash('success', "Succesfully Maybe'd!");
+        res.redirect('/events/' + event_id);
+    }
+
+    else {
+        status = 'no';
+        req.flash('success', "Succesfully said No!");
+        res.redirect('/events/' + event_id);
+    }
+
+    //Makes the RSVP
+     RSVP.create({user_id: user_id, event_id: event_id, status: status});
+
+    const filter = {user_id : user_id, event_id: event_id};
+    const update = {status: status};
+
+    let doc =  RSVP.findOneAndUpdate(filter, update, {upsert:true});
+
+    console.log(doc.user_id);
+
+}
+
+

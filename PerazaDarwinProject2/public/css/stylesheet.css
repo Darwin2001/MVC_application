@@ -131,6 +131,7 @@ body {
 .post-heading {
     float: left;
     margin-right: 10px;
+    display: block;
 }
 
 .post-buttons {
@@ -179,7 +180,7 @@ form label {
 
 }
 
-.label-dos{ 
+.label-dos {
     width: 100px;
 }
 
@@ -192,3 +193,48 @@ form label {
     background-color: limegreen;
     color: white;
 }
+
+.success {
+    background: rgba(108, 192, 112, 0.7);
+    color: #fff;
+    width: 70%;
+    margin: 0 auto 1rem auto;
+    text-align: center;
+    padding: 0.5rem 0;
+
+}
+
+.error {
+    background: rgba(255, 102, 51, 0.7);
+    color: #fff;
+    width: 70%;
+    margin: 0 auto 1rem auto;
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+.button-edit-yes{
+    background-color: #6FC726;
+    margin: 2px;    
+    width: 70px;
+    text-align: center;
+}
+.button-edit-no{
+    background-color: #ff6961;
+    margin: 2px;    
+    width: 70px;
+    text-align: center;
+}
+.button-edit-maybe{
+    background-color: #6488ea;
+    margin: 2px;    
+    width: 70px;
+    text-align: center;
+}
+.test{
+    float: right;
+    text-align: center;
+}
+table, th, td {
+    border:1px solid black;
+  }

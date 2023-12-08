@@ -1,6 +1,7 @@
 const express = require('express');
 const controller = require('../controllers/eventController');
 const {isLoggedIn, isAuthor} = require("../middlewares/auth");
+const {validateEvent, validateResult,validateRsvp} = require('../middlewares/validator');
 const router = express.Router();
 
 //Retrieve the index
@@ -10,7 +11,7 @@ router.get("/", controller.index);
 router.get('/newEvent' ,isLoggedIn,  controller.newEvent);
 
 //Redirects to the index after creating new post
-router.post('/',isLoggedIn, controller.create);
+router.post('/',isLoggedIn, validateEvent, validateResult, controller.create);
 
 //send the details of an identified event 
 router.get("/:id", controller.show);
@@ -23,6 +24,9 @@ router.put("/:id", isLoggedIn, isAuthor, controller.update);
 
 //Delete the story by id
 router.delete("/:id",isLoggedIn, isAuthor, controller.delete);
+
+//Update the rsvps 
+router.post('/:id/rsvp', isLoggedIn, controller.updateRsvp);
 
 
 

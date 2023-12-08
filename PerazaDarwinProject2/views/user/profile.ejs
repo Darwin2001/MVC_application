@@ -10,5 +10,28 @@
     }else{%>
         <p>You have not created any stories</p>
     <%}%>
+    <%if(rsvps.length){%>
+        <p>You have RSVP'd to the following events:</p>
+        <table>
+            <tr>
+            <th>Title</th>
+            <th>Going?</th>
+            </tr>
+            <%rsvps.forEach(rsvp=>{%>
+                <tr>
+                    <td>
+                        <%eventList.forEach(event=>{%>
+                            <%if(event._id == rsvp.event_id){%>
+                                <%=event.title%>
+                            <%}%>
+                        <%})%>
+                    </td>
+                    <td><%=rsvp.status%></td>
+                </tr>
+            <%});
+        }else{%>
+            <p>You are currently RSVP'ed to no events</p>
+            <%}%>
+        </table>
     </div>
     <%- include('../partials/footer.ejs')%>
