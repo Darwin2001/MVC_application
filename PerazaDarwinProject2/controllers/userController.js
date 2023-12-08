@@ -8,6 +8,7 @@ exports.new = (req, res)=>{
 
 exports.create = (req, res, next)=>{
         let user = new model(req.body);
+        user.email = user.email.toLowerCase();
     user.save()
     .then(user=> {
         req.flash('success','Successfully created an Account!');
@@ -35,6 +36,9 @@ exports.getUserLogin = (req, res, next) => {
 exports.login = (req, res, next)=>{
 
     let email = req.body.email;
+    if(email){
+        email = email.toLowerCase();
+    }
     let password = req.body.password;
     model.findOne({ email: email })
     .then(user => {
