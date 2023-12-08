@@ -178,3 +178,17 @@ form label {
     box-sizing: border-box;
 
 }
+
+.label-dos{ 
+    width: 100px;
+}
+
+.sub-button2 {
+    width: 60%;
+    margin-left: 155px;
+    box-sizing: border-box;
+    border: solid black 2px;
+    height: 28px;
+    background-color: limegreen;
+    color: white;
+}

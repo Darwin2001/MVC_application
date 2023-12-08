@@ -14,8 +14,13 @@
             <a href="/"><img src="/images/GH-logo/ghTransparent.png" class="favicon" alt="gamershublogo"></a>
             <div class="right-side">
                 <a href="/events/newEvent" class="link-button">New Event</a>
-                <a href="" class="link-button">Sign Up</a>
-                <a href="" class="link-button">Log In</a>
+                <%if(!user){%>
+                <a href="/user/new" class="link-button">Sign Up</a>
+                <a href="/user/login" class="link-button">Log In</a>
+                <%}else{%>
+                    <a href="/user/profile" class="link-button">Profile</a>
+                    <a href="/user/logout" class="link-button">Logoout</a>
+                <%}%>
             </div>
             <hr class="rule">
             <div class="bottom-tab">
